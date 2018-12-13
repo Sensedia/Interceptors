@@ -11,6 +11,7 @@ O nosso repositório possui a seguinte estrutura:
 ## Lista de Interceptors
   - JS_DateUtils: Provêm funções para a manipulação e vadiação de {Date}.
   - JS_FindElements_JDOM: Encontrar um elemento no XML com JDOM
+  - JS_FindOperationNameSOAP_JDOM: Encontrar o operationName de uma operação SOAP. 
   - JS_RequestCommons: Agrega as funções mais utilizadas por outros interceptors no fluxo de request.
   - JS_StringUtils: Provêm funções para a manipulação e vadiação de strings.
 
