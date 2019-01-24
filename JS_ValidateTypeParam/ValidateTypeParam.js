@@ -16,7 +16,7 @@ function validateType (type, data) {
                 return (date instanceof Date && date != 'Invalid Date') ? true : false;
             
             case 'boolean':
-                return (data == 'true' || data == 'false') ? true : false;
+                return (data.toLowerCase() == 'true' || data.toLowerCase() == 'false') ? true : false;
             
             default:
                 return false;
