@@ -1,5 +1,5 @@
 /* 
-* Loads the LinkHateoas calss to a context variable
+* Loads the LinkHateoas class to a context variable
 * Adding this interceptor either the request or response flow so it 
 * can be available to be used by the interceptors further on the flow
 */
@@ -11,7 +11,7 @@ try {
 }
 
 /**
- * Class responsible for creating HATEOAS links for operations ith GET method
+ * Class responsible for creating HATEOAS links for operations with GET method
  * of our APIs
  * <p>
  * It should be used on public APIs. It never should be used on internal APIs.
