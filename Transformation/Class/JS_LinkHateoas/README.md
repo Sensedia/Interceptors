@@ -36,6 +36,6 @@ Nesse trecho do código, é chamado a operação do objeto <b>'linkHateoas'</b> 
 ```javascript
 var link1 = linkHateoasObject.createLinks((requestedUrl + "/resource1", "relation1", ["POST","PUT"]);
 ```
-<br><b>href</b>: URL de request concatenada com o recurso alvo.
+<b>href</b>: URL de request concatenada com o recurso alvo.
 <br><b>relation</b>: Texto para definir a relação entre o recurso atual e o recurso alvo. Exemplos: 'Self', 'cartoes', 'depositar', 'aprovar'
 <br><b>methods</b>: Lista contendo os HTTP Methods que poderão ser usados nos links HATEOAS.
