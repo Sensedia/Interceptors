@@ -20,21 +20,22 @@ link1.push(link2[0]);
 obj.links = link1;
 ```
 ### Explicação detalhada
+
+Nesse trecho do código, é recuperada a instância do objeto <b>'linkHateoas'</b> que está na variável de contexto.
 ```javascript
 var linkHateoasObject = $call.contextVariables.get("linkHateoas");
 ```
-Nesse trecho do código, é recuperada a instância do objeto <b>'linkHateoas'</b> que está na variável de contexto.
 
+Nesse trecho do código, é recuperada a URL de request que servirá como URL base da URL do link HATEOAS.
 ```javascript
 var requestedUrl = $call.request.getRequestedUrl().toString();
 ```
-Nesse trecho do código, é recuperada a URL de request que servirá como URL base da URL do link HATEOAS.
-<br><b>OBS</b>: Caso a URL do link HATEOAS tenha que apontar para outra API, não deverá usar essa linha de código.
+<b>OBS</b>: Caso a URL do link HATEOAS tenha que apontar para outra API, não deverá usar essa linha de código.
 
+Nesse trecho do código, é chamado a operação do objeto <b>'linkHateoas'</b> passando o href, relation e methods.
 ```javascript
 var link1 = linkHateoasObject.createLinks((requestedUrl + "/resource1", "relation1", ["POST","PUT"]);
 ```
-Nesse trecho do código, é chamado a operação do objeto <b>'linkHateoas'</b> passando o hRef, relation e methods.
-<br><b>hRef</b>: URL de request concatenada com o recurso alvo.
+<br><b>href</b>: URL de request concatenada com o recurso alvo.
 <br><b>relation</b>: Texto para definir a relação entre o recurso atual e o recurso alvo. Exemplos: 'Self', 'cartoes', 'depositar', 'aprovar'
 <br><b>methods</b>: Lista contendo os HTTP Methods que poderão ser usados nos links HATEOAS.
