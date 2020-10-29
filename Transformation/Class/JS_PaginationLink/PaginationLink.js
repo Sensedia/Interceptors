@@ -1,7 +1,7 @@
 /* 
-* Carrega a classe PaginationLink para dentro da variável de contexto
-* adicionando esse interceptor no flow de response,
-* ele estará disponível para uso nos interceptors subsequentes.
+* Loads the PaginationLink class to a context variable
+* Adding this interceptor either the response flow so it 
+* can be available to be used by the interceptors further on the flow
 */
 try {
     var obj = new PaginationLink();
