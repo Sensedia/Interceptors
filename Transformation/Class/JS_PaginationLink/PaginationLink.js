@@ -134,7 +134,7 @@ function PaginationLink() {
         if (offset < quantidade_Paginas) {
             ofnext = offset + 1;
         } else {
-            //nesse caso o offset é maior que a quantidade de paginas ou será o mesmo valor que o last. Não retorna o objeto
+            // in this case the offset parameter is greater than the number of pages or it will be the same value as the last. Do not return the object
             ofnext = 0;
         }
 
@@ -161,6 +161,8 @@ function PaginationLink() {
             let last = _buildLink('last', requested_url, oflast, limit, order_fields);
             links.push(last);
         }
+
+        return links;
     }
 
     /**
