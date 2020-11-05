@@ -14,14 +14,6 @@ try {
 * Interceptor used to add paging links on return to the caller.
 * Only use it when the GET operation contains pagination.
 * <p>
-* Some context variables need to be set for this interceptor to work. Below the list of variables.
-* <p>
-* order: 
-*      Example: $call.addContextVariables('order', 'sort=' + sort);
-*               $call.addContextVariables('order', 'desc=' + desc);
-*
-*               sort and desc are the list of fields to be ordered
-*
 * @version 1.0.0
 * @author time-snake@sensedia.com
 */
