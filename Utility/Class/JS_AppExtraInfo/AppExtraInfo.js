@@ -25,6 +25,7 @@ function AppExtraInfo() {
      * @param {string} field - extrainfo name.
      * @param {string} value - extrainfo value.
      * @return {boolean} a flag which tells wether the changes were made or not
+     * @throws Status Code: >= 300
      */
     this.save = function (field, value) {
         const app_url = $call.environmentVariables.get("urlManagerApps").concat('/').concat($call.app.code);

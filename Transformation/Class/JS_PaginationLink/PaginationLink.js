@@ -38,6 +38,7 @@ function PaginationLink() {
      * @params {integer} total_records - Total number of records returned by the backend
      * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
      * @return {list} Created links.
+     * @throws Status Code: 400
      */
     this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, order_fields) {
         $call.tracer.trace("Operação -> createPaginationLinks");
@@ -49,6 +50,10 @@ function PaginationLink() {
         } else if (first_page_value === null || first_page_value == 'null') {
             
             _stopFlowWithCode(400, 'O campo first_page_value deve ser passado.', 'application/json');
+
+        } else if (first_page_value < 0 || first_page_value > 1) {
+            
+            _stopFlowWithCode(400, 'O campo first_page_value deve ter valor 0 ou 1.', 'application/json');
             
         } else if (total_records === null || total_records == 'null') {
             
