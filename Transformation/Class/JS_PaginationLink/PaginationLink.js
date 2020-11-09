@@ -19,27 +19,60 @@ try {
 */
 function PaginationLink() {
 
+    var _requested_url;
+    var _first_page_value;
+    var _offset;
+    var _limit;
+    var _total_records;
+    var _order_fields;
+    var _quantidade_Paginas;
+    
     /**
      * Returns the created pagination links.
      * <p>
      * 
      * @params {string} requested_url - Service call URL that will be used to build the link return URL
+     * @params {integer} first_page_value - Value to define the index of the first page, since the backend can use 0 or 1 as an index.
      * @params {integer} offset - Variable that must contain the index of the initial record to be searched
      * @params {integer} limit - Variable that defines the number of records to be searched at a time
      * @params {integer} total_records - Total number of records returned by the backend
      * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
      * @return {list} Created links.
      */
-    this.createPaginationLinks = function(requested_url, offset, limit, total_records, order_fields) {
+    this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, order_fields) {
         $call.tracer.trace("Operação -> createPaginationLinks");
 
-        if ((offset !== null || offset !== 'null') && (limit !== null || limit !== 'null')) {
+        if (requested_url === null || requested_url == 'null') {
             
-            return _buildPaginationLinks(requested_url, offset, limit, total_records, order_fields);
-    
-        } else if ((!offset && (!!limit && limit !== 'null')) || ((!!offset && offset !== 'null') && !limit)) {
+            _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', 'application/json');
+            
+        } else if (first_page_value === null || first_page_value == 'null') {
+            
+            _stopFlowWithCode(400, 'O campo first_page_value deve ser passado.', 'application/json');
+            
+        } else if (total_records === null || total_records == 'null') {
+            
+            _stopFlowWithCode(400, 'O campo total_records deve ser passado.', 'application/json');
+            
+        } else if ((!offset && (!!limit && limit !== 'null')) || ((!!offset && offset !== 'null') && !limit) || (!offset && !limit)) {
+            
             _stopFlowWithCode(400, 'Os campos offset e limit devem ser passados em conjunto.', 'application/json');
-        }
+            
+        } else {
+            
+            _requested_url = requested_url;
+            _first_page_value = first_page_value;
+            _offset = offset;
+            _limit = limit;
+            _total_records = total_records;
+            _order_fields = order_fields;
+            
+            if (parseInt(offset) < parseInt(first_page_value)) {
+                _stopFlowWithCode(400, 'O campo offset deve ser igual ou maior que o campo first_page_value.', 'application/json');
+            } else {
+                return _buildPaginationLinks();
+            }
+        } 
     };
 
     /**
@@ -47,22 +80,19 @@ function PaginationLink() {
      * <p>
      * 
      * @params {string} page - Cursor movement indicator for indicative link reference
-     * @params {string} requested_url - Service call URL that will be used to build the link return URL
-     * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
+     * @params {integer} offset - Variable that must contain the index of the record to be searched
      * @return {object} Link created.
      */
-    function _buildLink(page, requested_url, offset, limit, order_fields) {
+    function _buildLink(page, offset) {
         $call.tracer.trace("Operação -> _buildLink");
     
         var link = {};
         link.page = page;
     
-        if (order_fields !== null) {
-            link.href = requested_url + "?offset=" + offset + "&limit=" + limit + "&" + order_fields;
+        if (_order_fields !== null) {
+            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit + "&" + _order_fields;
         } else {
-            link.href = requested_url + "?offset=" + offset + "&limit=" + limit;
+            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit;
         }
     
         return link;
@@ -73,30 +103,29 @@ function PaginationLink() {
      * It only returns links to the next and last pages.
      * <p>
      * 
-     * @params {string} requested_url - Service call URL that will be used to build the link return URL
-     * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
-     * @params {integer} quantidade_Paginas - Total pages that can be paged
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
      * @return {list} Created links.
      */
-    function _buildPaginationLinksFirstPage(requested_url, offset, limit, quantidade_Paginas, order_fields) {
+    function _buildPaginationLinksFirstPage() {
         $call.tracer.trace("Operação -> _buildPaginationLinksFirstPage");
 
         let links = [];
         let ofnext = 0;
         let oflast = 0;
 
-        if (offset < quantidade_Paginas) {
-            ofnext = offset + 1;
+        if (_offset < _quantidade_Paginas) {
+            ofnext = _offset + 1;
         }
 
-        oflast = quantidade_Paginas;
+        if (_first_page_value == 0) {
+            oflast = _quantidade_Paginas - 1;
+        } else {
+            oflast = _quantidade_Paginas;
+        }
 
-        let next = _buildLink('next', requested_url, ofnext, limit, order_fields);
+        let next = _buildLink('next', ofnext);
         links.push(next);
 
-        let last = _buildLink('last', requested_url, oflast, limit, order_fields);
+        let last = _buildLink('last', oflast);
         links.push(last);
 
         return links;
@@ -107,53 +136,52 @@ function PaginationLink() {
      * The first, next, previous and last pages will return according to the current page
      * <p>
      * 
-     * @params {string} requested_url - Service call URL that will be used to build the link return URL
-     * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
-     * @params {integer} quantidade_Paginas - Total pages that can be paged
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
      * @return {list} Created links.
      */
-    function _buildPaginationLinksAllPages(requested_url, offset, limit, quantidade_Paginas, order_fields) {
+    function _buildPaginationLinksAllPages() {
         $call.tracer.trace("Operação -> _buildPaginationLinksAllPages");
 
-        let offirst = 1;
+        let offirst = _first_page_value;
         var ofnext = 0;
         var ofprev = 0;
         var oflast = 0;
         var links = [];
 
-        if (offset < quantidade_Paginas) {
-            ofnext = offset + 1;
+        if (_offset < _quantidade_Paginas) {
+            ofnext = _offset + 1;
         } else {
-            // in this case the offset parameter is greater than the number of pages or it will be the same value as the last. Do not return the object
+            //nesse caso o offset é maior que a quantidade de paginas ou será o mesmo valor que o last. Não retorna o objeto
             ofnext = 0;
         }
 
-        if (offset > 1 && ((offset - 1) > 0)) {
-            ofprev = offset - 1;
+        if (_offset > 1 && ((_offset - 1) > 0)) {
+            ofprev = _offset - 1;
         }
 
-        oflast = quantidade_Paginas;
+        if (_first_page_value == 0) {
+            oflast = _quantidade_Paginas - 1;
+        } else {
+            oflast = _quantidade_Paginas;
+        }
 
-        let first = _buildLink('first', requested_url, offirst, limit, order_fields);
+        let first = _buildLink('first', offirst);
         links.push(first);
 
-        if ((ofnext > 0) && (ofnext < quantidade_Paginas)) {
-            let next = _buildLink('next', requested_url, ofnext, limit, order_fields);
+        if ((ofnext > 0) && (ofnext < _quantidade_Paginas)) {
+            let next = _buildLink('next', ofnext);
             links.push(next);
         }
 
         if (ofprev > 1) {
-            let prev = _buildLink('prev', requested_url, ofprev, limit, order_fields);
+            let prev = _buildLink('prev', ofprev);
             links.push(prev);
         }
 
-        if (offset < quantidade_Paginas) {
-            let last = _buildLink('last', requested_url, oflast, limit, order_fields);
+        if (_offset < _quantidade_Paginas) {
+            let last = _buildLink('last', oflast);
             links.push(last);
         }
-
+        
         return links;
     }
 
@@ -161,34 +189,27 @@ function PaginationLink() {
      * Create pagination links.
      * <p>
      * 
-     * @params {string} requested_url - Service call URL that will be used to build the link return URL
-     * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
-     * @params {integer} total_records - Total number of records returned by the backend
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
      * @return {list} Created links.
      */
-    function _buildPaginationLinks(requested_url, offset, limit, total_records, order_fields) {
+    function _buildPaginationLinks() {
         $call.tracer.trace("Operação -> _buildPaginationLinks");
     
-        const FIRST_PAGE = 1;
-
         var links = [];
     
-        offset = parseInt(offset);
-        total_records = parseInt(total_records);
-        limit = parseInt(limit);
+        _offset = parseInt(_offset);
+        _total_records = parseInt(_total_records);
+        _limit = parseInt(_limit);
     
-        var quantidade_Paginas = Math.floor(total_records / limit);
+        _quantidade_Paginas = Math.floor(_total_records / _limit);
     
-        if ((total_records % limit) > 0) {
-            quantidade_Paginas = quantidade_Paginas + 1;
+        if ((_total_records % _limit) > 0) {
+            _quantidade_Paginas = _quantidade_Paginas + 1;
         }
     
-        if (offset == FIRST_PAGE) {
-            links = _buildPaginationLinksFirstPage(requested_url, offset, limit, quantidade_Paginas, order_fields);
+        if (_offset == _first_page_value) {
+            links = _buildPaginationLinksFirstPage();
         } else {
-            links = _buildPaginationLinksAllPages(requested_url, offset, limit, quantidade_Paginas, order_fields);
+            links = _buildPaginationLinksAllPages();
         }
     
         return links;
