@@ -4,7 +4,7 @@ Esse interceptor deverá ser usado somente para o caso do backend não estar pre
 ## Utilização:
 1 - Adicione o interceptor no flow de request ou response da operação GET.
 <br>
-2 - Adicione um custom interceptor que será responsável por passar o corpo vindo do backend para o interceptor de HATEOAS.
+2 - Adicione um custom interceptor no flow de response que será responsável por passar o corpo vindo do backend para o interceptor de HATEOAS.
 <br>
 3 - A forma de chamada do interceptor é assim:
 ```javascript
