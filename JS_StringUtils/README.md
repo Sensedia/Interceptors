@@ -1,5 +1,5 @@
 # String Utils Interceptor. 
-Este interceptor tem a finalidade prover funções para a manipulação e vadiação de strings. 
+Este interceptor tem a finalidade prover funções para a manipulação e validação de strings. 
  
 Ele faz isso através de uma classe que é que contém as funções de manipulação e tratamento de dados. Esta classe é carregada nas variáveis de contexto com o nome de 'string-utils'. 
  
@@ -13,7 +13,7 @@ Nele encontramos algumas funções como: </br>
 </ul> 
 
 ## Antes de utilizar 
-É aconselhável declarar esse interceptor na guia de Interceptors do API Manager. Essa funcionalidade é encontrada logo abaixo do item APIs no menu lateral. 
+É aconselhável criar um novo interceptor no seu API Manager na guia de Interceptors. Em seguica transcrever para esse novo interceptor este código acrescido do seu proprio, para sua necessidade.  
  
 ## Utilização: 
 Para utilizar esse interceptor, basta incluí-lo no <b>inicio</b> do fluxo de requisições do seu recurso. 
