@@ -1,9 +1,9 @@
 # Permissao Acesso Dias Interceptor. 
 Este interceptor tem a finalidade de permitir a chamada de uma API quando esta estiver num dia util (que não seja fim de semana ou feriado)
  
-Para o correto funcionamento temso alguns requisitos: </br> 
+Para o correto funcionamento temos o requisito: </br> 
 <ul> 
-<li>Um array cadastrado de feriados - declarado da seguinte forma no environment {"feriados":["01-01-2021","25-12-2020","02-11-2020","15-11-2020"]}</li>  
+<li>Existir um array cadastrado de feriados no environment da request.</li>  
 </ul> 
 
 ## Antes de utilizar 
