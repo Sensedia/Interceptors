@@ -1,6 +1,6 @@
 # PaginationLink
 Custom interceptor do tipo <b>'classe'</b> para criar links HATEOAS de paginação para operações GET das APIs.
-Esse interceptor deverá ser usado somente para o caso do backend não estar preparado para enviar no corpo da resposta os links de paginação.
+Esse interceptor deverá ser usado somente para o caso do backend <b>não estar preparado</b> para enviar no corpo da resposta os links de paginação.
 ## Utilização:
 1 - Adicione o interceptor no flow de request ou response da operação GET.
 <br>
@@ -8,14 +8,19 @@ Esse interceptor deverá ser usado somente para o caso do backend não estar pre
 <br>
 3 - A forma de chamada do interceptor é assim:
 ```javascript
-var paginationLink = $call.contextVariables.get("paginationLink");
+try {
+    var paginationLink = $call.contextVariables.get("paginationLink");
 
-var obj = JSON.parse($call.response.getBody().getString('UTF-8'));
+    var obj = JSON.parse($call.response.getBody().getString('UTF-8'));
 
-var requestedUrl = $call.request.getRequestedUrl().toString();
-var links = paginationLink.createPaginationLinks(requested_url, offset, limit, total_records, order_fields);
+    var requestedUrl = $call.request.getRequestedUrl().toString();
+    var links = paginationLink.createPaginationLinks(requested_url, offset, limit, total_records, query_parameters);
 
-obj.links_paginacao = links;
+    obj.links_paginacao = links;
+} catch (e) {
+    $call.tracer.trace("Um erro ocorreu");
+    throw e;
+}
 ```
 ### Explicação detalhada
 
@@ -29,11 +34,11 @@ Nesse trecho do código, é recuperada a URL de request que servirá como URL ba
 var requestedUrl = $call.request.getRequestedUrl().toString();
 ```
 
-Nesse trecho do código, é chamado a operação do objeto <b>'paginationLink'</b> passando o offset, limit, total_records e order_fields.
+Nesse trecho do código, é chamado a operação do objeto <b>'paginationLink'</b> passando o offset, limit, total_records e query_parameters.
 ```javascript
-var links = paginationLink.createPaginationLinks(requested_url, offset, limit, total_records, order_fields);
+var links = paginationLink.createPaginationLinks(requested_url, offset, limit, total_records, query_parameters);
 ```
-<b>offset</b>: Variável que deve conter o índice do registro inicial a ser pesquisado. O valor deve vir no body do backend e caso o valor seja <b>NULL</b>, atribuir o valor <b>1</b> que significa a primeira página.
-
-<br><b>relation</b>: Texto para definir a relação entre o recurso atual e o recurso alvo. Exemplos: 'Self', 'cartoes', 'depositar', 'aprovar'
-<br><b>methods</b>: Lista contendo os HTTP Methods que poderão ser usados nos links HATEOAS.
+<b>offset</b>: Variável que deve conter o índice do registro inicial a ser pesquisado. O valor deve vir no body do backend e caso o valor seja <b>NULL</b>, atribuir o valor <b>0</b> ou <b>1</b> para setar a primeira página.
+<br><b>limit</b>: Variável que define o número total de registros a serem retornados em cada página.
+<br><b>total_records</b>: Número total de registros retornados pelo back-end.
+<br><b>query_parameters</b>: Usado para os parâmetros de consulta serem adicionados aos links de paginação. <b>opcional</b>.

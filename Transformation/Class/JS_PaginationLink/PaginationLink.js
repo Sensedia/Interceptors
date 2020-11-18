@@ -24,7 +24,7 @@ function PaginationLink() {
     var _offset;
     var _limit;
     var _total_records;
-    var _order_fields;
+    var _query_parameters;
     var _quantidade_Paginas;
     
     /**
@@ -34,13 +34,13 @@ function PaginationLink() {
      * @params {string} requested_url - Service call URL that will be used to build the link return URL
      * @params {integer} first_page_value - Value to define the index of the first page, since the backend can use 0 or 1 as an index.
      * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
+     * @params {integer} limit - Variable that defines the total number of records to be returned on each page
      * @params {integer} total_records - Total number of records returned by the backend
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
+     * @params {string} query_parameters - Used for query parameters to be added to paging links (Optional).
      * @return {list} Created links.
      * @throws Status Code: 400
      */
-    this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, order_fields) {
+    this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, query_parameters) {
         $call.tracer.trace("Operação -> createPaginationLinks");
 
         if (requested_url === null || requested_url == 'null') {
@@ -70,7 +70,7 @@ function PaginationLink() {
             _offset = offset;
             _limit = limit;
             _total_records = total_records;
-            _order_fields = order_fields;
+            _query_parameters = query_parameters;
             
             if (parseInt(offset) < parseInt(first_page_value)) {
                 _stopFlowWithCode(400, 'O campo offset deve ser igual ou maior que o campo first_page_value.', 'application/json');
@@ -94,8 +94,8 @@ function PaginationLink() {
         var link = {};
         link.page = page;
     
-        if (_order_fields !== null) {
-            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit + "&" + _order_fields;
+        if (_query_parameters !== null) {
+            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit + "&" + _query_parameters;
         } else {
             link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit;
         }
