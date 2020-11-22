@@ -72,7 +72,7 @@ function PaginationLink() {
         $call.tracer.trace("Operação -> _isPaginationParametersValid");
         var isValid = true;
         if (requested_url === null || requested_url == 'null') {
-            _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', );
+            _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', 'application/json');
             isValid = false;
         } else if (first_page_value === null || first_page_value == 'null') {
             _stopFlowWithCode(400, 'O campo first_page_value deve ser passado.', 'application/json');
@@ -144,7 +144,7 @@ function PaginationLink() {
 
         let offirst = _first_page_value;
         var ofnext = (_offset < _pages_quantity) ? _offset + 1 : 0;
-        var ofprev = (_offset > 1 && ((_offset - 1) > 0)) ? _offset - 1 : 0;
+        var ofprev = (_offset > _first_page_value) ? _offset - 1 : 0;
         var oflast = (_first_page_value == 0) ? _pages_quantity - 1 : _pages_quantity;
         var links = [];
 
@@ -152,10 +152,10 @@ function PaginationLink() {
         if ((ofnext > 0) && (ofnext < _pages_quantity)) {
             links.push(_buildLink('next', ofnext));
         }
-        if (ofprev > 1) {
+        if ((_offset > _first_page_value)) {
             links.push(_buildLink('prev', ofprev));
         }
-        if (_offset < _pages_quantity) {
+        if (_offset < oflast) {
             links.push(_buildLink('last', oflast));
         }
         
@@ -172,8 +172,11 @@ function PaginationLink() {
     function _buildLink(page, offset) {
         $call.tracer.trace("Operação -> _buildLink");
 
-        var href = _requested_url + "?offset=" + offset + "&limit=" + _limit +
-            (_query_parameters !== null) ? ("&" + _query_parameters) : "";
+        var href = _requested_url + "?offset=" + offset + "&limit=" + _limit;
+
+        if (_query_parameters !== null) {
+            href = href + "&" + _query_parameters;
+        }
 
         return {
             "page": page,
