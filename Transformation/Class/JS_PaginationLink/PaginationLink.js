@@ -69,6 +69,7 @@ function PaginationLink() {
      * @return {boolean} a flag which indicates wether the parameters are valid or not
      */
     function _isPaginationParametersValid(requested_url, first_page_value, offset, limit, total_records) {
+        $call.tracer.trace("Operação -> _isPaginationParametersValid");
         var isValid = true;
         if (requested_url === null || requested_url == 'null') {
             _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', );
