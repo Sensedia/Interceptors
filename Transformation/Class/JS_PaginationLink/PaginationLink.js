@@ -1,7 +1,8 @@
 /* 
-* Loads the PaginationLink class to a context variable
-* Adding this interceptor either the response flow so it 
-* can be available to be used by the interceptors further on the flow
+* Loads the PaginationLink class to a context variable.
+* <p/>
+* Add this interceptor at the begining of the response flow so it can be 
+* used by any other interceptors further on
 */
 try {
     var obj = new PaginationLink();
@@ -11,204 +12,98 @@ try {
 }
 
 /*
-* Interceptor used to add paging links on return to the caller.
-* Only use it when the GET operation contains pagination.
-* <p>
+* This interceptor is used to add pagination links on the HTTP response.
+* <p/>
+* You should only use it whenever the GET operation contains pagination.
+* 
 * @version 1.0.0
 * @author time-snake@sensedia.com
 */
 function PaginationLink() {
-
     var _requested_url;
     var _first_page_value;
     var _offset;
     var _limit;
     var _total_records;
-    var _order_fields;
-    var _quantidade_Paginas;
+    var _query_parameters;
+    var _pages_quantity;
     
     /**
      * Returns the created pagination links.
-     * <p>
      * 
-     * @params {string} requested_url - Service call URL that will be used to build the link return URL
-     * @params {integer} first_page_value - Value to define the index of the first page, since the backend can use 0 or 1 as an index.
-     * @params {integer} offset - Variable that must contain the index of the initial record to be searched
-     * @params {integer} limit - Variable that defines the number of records to be searched at a time
-     * @params {integer} total_records - Total number of records returned by the backend
-     * @params {string} order_fields - Field ordering parameter ascending or descending. This field will only be incremented in the link URL (Optional).
-     * @return {list} Created links.
-     * @throws Status Code: 400
+     * @params {string} requested_url Called URL
+     * @params {integer} first_page_value Index of the first page
+     * @params {integer} offset Index of the initial record
+     * @params {integer} limit Total number of records of each page
+     * @params {integer} total_records Number of records returned by the backend
+     * @params {string} query_parameters Query parameters to be added to paging links (Optional).
+     * @return {array} Created links.
      */
-    this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, order_fields) {
+    this.createPaginationLinks = function(requested_url, first_page_value, offset, limit, total_records, query_parameters) {
         $call.tracer.trace("Operação -> createPaginationLinks");
-
-        if (requested_url === null || requested_url == 'null') {
-            
-            _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', 'application/json');
-            
-        } else if (first_page_value === null || first_page_value == 'null') {
-            
-            _stopFlowWithCode(400, 'O campo first_page_value deve ser passado.', 'application/json');
-
-        } else if (first_page_value < 0 || first_page_value > 1) {
-            
-            _stopFlowWithCode(400, 'O campo first_page_value deve ter valor 0 ou 1.', 'application/json');
-            
-        } else if (total_records === null || total_records == 'null') {
-            
-            _stopFlowWithCode(400, 'O campo total_records deve ser passado.', 'application/json');
-            
-        } else if ((!offset && (!!limit && limit !== 'null')) || ((!!offset && offset !== 'null') && !limit) || (!offset && !limit)) {
-            
-            _stopFlowWithCode(400, 'Os campos offset e limit devem ser passados em conjunto.', 'application/json');
-            
-        } else {
-            
+        if (_isPaginationParametersValid(requested_url, first_page_value, offset, limit, total_records)) {
+            // loading the variables internally
             _requested_url = requested_url;
             _first_page_value = first_page_value;
-            _offset = offset;
-            _limit = limit;
-            _total_records = total_records;
-            _order_fields = order_fields;
-            
-            if (parseInt(offset) < parseInt(first_page_value)) {
-                _stopFlowWithCode(400, 'O campo offset deve ser igual ou maior que o campo first_page_value.', 'application/json');
-            } else {
-                return _buildPaginationLinks();
-            }
+            _offset = parseInt(offset);
+            _limit = parseInt(limit);
+            _total_records = parseInt(total_records);
+            _query_parameters = query_parameters;
+            _pages_quantity = Math.floor(_total_records / _limit);
+
+            return _buildPaginationLinks();
         } 
     };
 
     /**
-     * Creates the pagination link.
-     * <p>
+     * Checking if the pagination parameters are valid
+     * <p/>
+     * Internally, this function will stop the request's execution flow in case one or more
+     *      parameters are invalid
      * 
-     * @params {string} page - Cursor movement indicator for indicative link reference
-     * @params {integer} offset - Variable that must contain the index of the record to be searched
-     * @return {object} Link created.
+     * @params {string} requested_url Called URL
+     * @params {integer} first_page_value Index of the first page
+     * @params {integer} offset Index of the initial record
+     * @params {integer} limit Total number of records of each page
+     * @params {integer} total_records Number of records returned by the backend
+     * @return {boolean} a flag which indicates wether the parameters are valid or not
      */
-    function _buildLink(page, offset) {
-        $call.tracer.trace("Operação -> _buildLink");
-    
-        var link = {};
-        link.page = page;
-    
-        if (_order_fields !== null) {
-            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit + "&" + _order_fields;
-        } else {
-            link.href = _requested_url + "?offset=" + offset + "&limit=" + _limit;
+    function _isPaginationParametersValid(requested_url, first_page_value, offset, limit, total_records) {
+        $call.tracer.trace("Operação -> _isPaginationParametersValid");
+        var isValid = true;
+        if (requested_url === null || requested_url == 'null') {
+            _stopFlowWithCode(400, 'O campo requested_url deve ser passado.', 'application/json');
+            isValid = false;
+        } else if (first_page_value === null || first_page_value == 'null') {
+            _stopFlowWithCode(400, 'O campo first_page_value deve ser passado.', 'application/json');
+            isValid = false;
+        } else if (first_page_value < 0 || first_page_value > 1) {
+            _stopFlowWithCode(400, 'O campo first_page_value deve ter valor 0 ou 1.', 'application/json');
+            isValid = false;
+        } else if (total_records === null || total_records == 'null') {
+            _stopFlowWithCode(400, 'O campo total_records deve ser passado.', 'application/json');
+            isValid = false;
+        } else if ((!offset && (!!limit && limit !== 'null')) || ((!!offset && offset !== 'null') && !limit) || (!offset && !limit)) {
+            _stopFlowWithCode(400, 'Os campos offset e limit devem ser passados em conjunto.', 'application/json');
+            isValid = false;
+        } else if (parseInt(offset) < parseInt(first_page_value)) {
+            _stopFlowWithCode(400, 'O campo offset deve ser igual ou maior que o campo first_page_value.', 'application/json');
         }
-    
-        return link;
-    }
-
-    /**
-     * Creates the pagination links on the first page.
-     * It only returns links to the next and last pages.
-     * <p>
-     * 
-     * @return {list} Created links.
-     */
-    function _buildPaginationLinksFirstPage() {
-        $call.tracer.trace("Operação -> _buildPaginationLinksFirstPage");
-
-        let links = [];
-        let ofnext = 0;
-        let oflast = 0;
-
-        if (_offset < _quantidade_Paginas) {
-            ofnext = _offset + 1;
-        }
-
-        if (_first_page_value == 0) {
-            oflast = _quantidade_Paginas - 1;
-        } else {
-            oflast = _quantidade_Paginas;
-        }
-
-        let next = _buildLink('next', ofnext);
-        links.push(next);
-
-        let last = _buildLink('last', oflast);
-        links.push(last);
-
-        return links;
-    }
-
-    /**
-     * Create pagination links for all pages.
-     * The first, next, previous and last pages will return according to the current page
-     * <p>
-     * 
-     * @return {list} Created links.
-     */
-    function _buildPaginationLinksAllPages() {
-        $call.tracer.trace("Operação -> _buildPaginationLinksAllPages");
-
-        let offirst = _first_page_value;
-        var ofnext = 0;
-        var ofprev = 0;
-        var oflast = 0;
-        var links = [];
-
-        if (_offset < _quantidade_Paginas) {
-            ofnext = _offset + 1;
-        } else {
-            //nesse caso o offset é maior que a quantidade de paginas ou será o mesmo valor que o last. Não retorna o objeto
-            ofnext = 0;
-        }
-
-        if (_offset > 1 && ((_offset - 1) > 0)) {
-            ofprev = _offset - 1;
-        }
-
-        if (_first_page_value == 0) {
-            oflast = _quantidade_Paginas - 1;
-        } else {
-            oflast = _quantidade_Paginas;
-        }
-
-        let first = _buildLink('first', offirst);
-        links.push(first);
-
-        if ((ofnext > 0) && (ofnext < _quantidade_Paginas)) {
-            let next = _buildLink('next', ofnext);
-            links.push(next);
-        }
-
-        if (ofprev > 1) {
-            let prev = _buildLink('prev', ofprev);
-            links.push(prev);
-        }
-
-        if (_offset < _quantidade_Paginas) {
-            let last = _buildLink('last', oflast);
-            links.push(last);
-        }
-        
-        return links;
+        return isValid;
     }
 
     /**
      * Create pagination links.
-     * <p>
      * 
-     * @return {list} Created links.
+     * @return {array} Created links.
      */
     function _buildPaginationLinks() {
         $call.tracer.trace("Operação -> _buildPaginationLinks");
     
         var links = [];
     
-        _offset = parseInt(_offset);
-        _total_records = parseInt(_total_records);
-        _limit = parseInt(_limit);
-    
-        _quantidade_Paginas = Math.floor(_total_records / _limit);
-    
         if ((_total_records % _limit) > 0) {
-            _quantidade_Paginas = _quantidade_Paginas + 1;
+            _pages_quantity = _pages_quantity + 1;
         }
     
         if (_offset == _first_page_value) {
@@ -221,21 +116,89 @@ function PaginationLink() {
     }
 
     /**
-     * Stop the flow execution because of exception.
-     * <p>
+     * Creates the pagination links on the first page.
+     * <p/>
+     * It only returns the 'next' and 'last' pages links.
      * 
-     * @params {integer} code - Error status code
-     * @params {string} message - Error message
-     * @params {strong} contentType - Error message content type
+     * @return {array} An array with pagination links.
      */
-    function _stopFlowWithCode(code, message, contentType) {
+    function _buildPaginationLinksFirstPage() {
+        $call.tracer.trace("Operação -> _buildPaginationLinksFirstPage");
+
+        let ofnext = (_offset < _pages_quantity) ? _offset + 1 : 0;
+        let oflast = (_first_page_value == 0) ? _pages_quantity - 1 : _pages_quantity;
+
+        return [_buildLink('next', ofnext), 
+                _buildLink('last', oflast)];
+    }
+
+    /**
+     * Create pagination links for all pages but the first one.
+     * <p/>
+     * The 'first', 'next', 'previous' and 'last' pages will be returned according to the current page
+     * 
+     * @return {array} An array with pagination links.
+     */
+    function _buildPaginationLinksAllPages() {
+        $call.tracer.trace("Operação -> _buildPaginationLinksAllPages");
+
+        let offirst = _first_page_value;
+        var ofnext = (_offset < _pages_quantity) ? _offset + 1 : 0;
+        var ofprev = (_offset > _first_page_value) ? _offset - 1 : 0;
+        var oflast = (_first_page_value == 0) ? _pages_quantity - 1 : _pages_quantity;
+        var links = [];
+
+        links.push(_buildLink('first', offirst));
+        if ((ofnext > 0) && (ofnext < _pages_quantity)) {
+            links.push(_buildLink('next', ofnext));
+        }
+        if ((_offset > _first_page_value)) {
+            links.push(_buildLink('prev', ofprev));
+        }
+        if (_offset < oflast) {
+            links.push(_buildLink('last', oflast));
+        }
+        
+        return links;
+    }
+
+    /**
+     * Creates the pagination link.
+     * 
+     * @params {string} page Cursor movement indicator for indicative link reference
+     * @params {integer} offset Variable that must contain the index of the record to be searched
+     * @return {object} Created link.
+     */
+    function _buildLink(page, offset) {
+        $call.tracer.trace("Operação -> _buildLink");
+
+        var href = _requested_url + "?offset=" + offset + "&limit=" + _limit;
+
+        if (_query_parameters !== null) {
+            href = href + "&" + _query_parameters;
+        }
+
+        return {
+            "page": page,
+            "href": href
+        };
+    }
+
+    /**
+     * Stop the flow execution
+     * 
+     * @params {integer} code Error status code
+     * @params {string} message Error message
+     */
+    function _stopFlowWithCode(code, message) {
         $call.tracer.trace('ERROR - STATUS CODE: ' + code + ' - ' + message);
         $call.decision.setAccept(false);
         $call.stopFlow = true;
         $call.response = new com.sensedia.interceptor.externaljar.dto.ApiResponse();
         $call.response.setStatus(code);
-        $call.response.getBody().setString(' { "mensagem" : "' + message + '" }', "utf-8");
-        $call.response.setHeader("Content-Type", contentType);
+        $call.response.getBody().setString(JSON.stringify({
+            "mensagem" : String(message)
+        }), "utf-8");
+        $call.response.setHeader("Content-Type", 'application/json');
     }
-    
 }
