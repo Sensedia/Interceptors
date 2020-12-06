@@ -19,8 +19,8 @@ var link2 = linkHateoasObject.createLinks(requestedUrl + "/resource2", "relation
 link1.push(link2[0]);
 obj.links = link1;
 ```
-### Explicação detalhada
 
+### Explicação detalhada
 Nesse trecho do código, é recuperada a instância do objeto <b>'linkHateoas'</b> que está na variável de contexto.
 ```javascript
 var linkHateoasObject = $call.contextVariables.get("linkHateoas");
