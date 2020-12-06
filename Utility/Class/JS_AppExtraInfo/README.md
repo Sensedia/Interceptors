@@ -27,5 +27,5 @@ A recuperação de um ExtraInfo na APP é feita como indica o exemplo abaixo:
 ```javascript
 var field = 'teste';
 
-appExtraInfoObject.get(field);
+var value = appExtraInfoObject.get(field);
 ```
