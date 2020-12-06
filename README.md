@@ -15,13 +15,13 @@ Adotar padrões e boas práticas de implementação para melhorar a qualidade do
 O nosso repositório possui a seguinte estrutura:
 
 - Master Repo<br>&nbsp;&nbsp;&nbsp;&nbsp;
-       |- Categoria<br>
-              |- Tipo (Flow ou Class)<br>
-                        |- Interceptor<br>
-                                |- JS_Interceptor<br>
-                                |- JV_Interceptor<br>
-                                |- Readme<br>
-       |- Readme
+   |- Categoria<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      |- Tipo (Flow ou Class)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         |- Interceptor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            |- JS_Interceptor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            |- JV_Interceptor<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            |- Readme<br>&nbsp;&nbsp;&nbsp;&nbsp;
+   |- Readme
 
   - A raíz do repositório irá conter todas as categorias de interceptors e um documento ReadMe;
   - Cada categoria irá conter os tipos de interceptors. As categoria podem ser: <b>security</b>, <b>transformation</b>, <b>utility</b>, etc.
