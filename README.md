@@ -14,7 +14,7 @@ Adotar padrões e boas práticas de implementação para melhorar a qualidade do
 ## Estrutura
 O nosso repositório possui a seguinte estrutura:
 
-- Master Repo<br>
+- Master Repo<br>&nbsp;&nbsp;&nbsp;&nbsp;
        |- Categoria<br>
               |- Tipo (Flow ou Class)<br>
                         |- Interceptor<br>
