@@ -1,4 +1,4 @@
-/*
+/**
 * Interceptor to restrict the access of an APP according to a
 * list of allowed operations. If the requested method and URL
 * can not be found in the allowed operation list, the request

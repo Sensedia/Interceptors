@@ -1,4 +1,4 @@
-/* 
+/**
 * Loads the PaginationLink class to a context variable.
 * <p/>
 * Add this interceptor at the begining of the response flow so it can be 
@@ -11,7 +11,7 @@ try {
     $call.tracer.trace(e);
 }
 
-/*
+/**
 * This interceptor is used to add pagination links on the HTTP response.
 * <p/>
 * You should only use it whenever the GET operation contains pagination.

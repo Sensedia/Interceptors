@@ -7,7 +7,7 @@
  * Remember to replace the API_NAME constant whenever you place this interceptor amidst your flow
  * 
  * @version 1.0.0
- * @author time-snake@sulamerica.com.br 
+ * @author time-snake@sensedia.com
  */
 const API_NAME = "REPLACE_HERE";
 try {

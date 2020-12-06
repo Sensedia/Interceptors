@@ -1,9 +1,9 @@
+/**
+* loading Commons class into context variables
+* by adding this interceptor at the head of the request flow,
+* it will be available for use on the subsequent interceptors.
+*/
 try {
-    /* 
-     * loading Commons class into context variables
-     * by adding this interceptor at the head of the request flow,
-     * it will be available for use on the subsequent interceptors.
-     */
     var obj = new Commons();
     $call.contextVariables.put("commons", obj);
 } catch(ex) {

@@ -1,4 +1,4 @@
-/* 
+/**
 * Loads the AppExtraInfo calls to a context variable
 * Adding this interceptor either the request or response flow so it 
 * can be available to be used by the interceptors further on the flow
