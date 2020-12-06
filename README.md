@@ -14,22 +14,22 @@ Adotar padrões e boas práticas de implementação para melhorar a qualidade do
 ## Estrutura
 O nosso repositório possui a seguinte estrutura:
 
-- Master Repo
-       |- Categoria
-              |- Tipo (Flow ou Class)
-                        |- Interceptor
-                                |- JS_Interceptor
-                                |- JV_Interceptor
-                                |- Readme
+- Master Repo<br>
+       |- Categoria<br>
+              |- Tipo (Flow ou Class)<br>
+                        |- Interceptor<br>
+                                |- JS_Interceptor<br>
+                                |- JV_Interceptor<br>
+                                |- Readme<br>
        |- Readme
 
   - A raíz do repositório irá conter todas as categorias de interceptors e um documento ReadMe;
-  - Cada categoria irá conter os tipos de interceptors. As categoria podem ser: security, transformation, utility, etc.
-  - Os tipos de interceptors irá conter todos os interceptors e podem ser Flow(Fluxo) ou Class(Classe).
+  - Cada categoria irá conter os tipos de interceptors. As categoria podem ser: <b>security</b>, <b>transformation</b>, <b>utility</b>, etc.
+  - Os tipos de interceptors irá conter todos os interceptors e podem ser <b>Flow(Fluxo)</b> ou <b>Class(Classe)</b>.
   - Cada interceptor deve estar separado por uma pasta.
-  - Interceptor pode ser Java ou JavaScript;
+  - Interceptor pode ser <b>Java</b> ou <b>JavaScript</b>;
   - Cada interceptor deve ter o seu Readme;
-  - Pasta de interceptor JavaScript deve ter o prefixo JS_ e pasta de interceptor Java deve ter o prefixo JV_.
+  - Pasta de interceptor JavaScript deve ter o prefixo <b>JS_</b> e pasta de interceptor Java deve ter o prefixo <b>JV_</b>.
 
 ## Contribua conosco!
 Você tem um interceptor que gostaria de compartilhar com o time Sensedia e com os nossos clientes incríveis? Fique fique à vontade.
