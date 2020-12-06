@@ -2,13 +2,13 @@
 
 ## Objetivo
 Repositório corporativo de Interceptors genéricos (Javascript e Java) criados dentro do Sensedia API Manager para que todas as equipes, sejam elas da Sensedia ou dos clientes, possam reusá-los sem a necessidade de recriá-los, seja com outros nomes ou com outros códigos-fontes.
-<br>
+<p>
 Tornar a existência dos Interceptors conhecida corporativamente.
-<br>
+<p>
 Facilitar a descoberta e o acesso aos Interceptors.
-<br>
+<p>
 Ter uma melhor gestão no versionamento dos Interceptors.
-<br>
+<p>
 Adotar padrões e boas práticas de implementação para melhorar a qualidade do código.
 
 ## Estrutura
