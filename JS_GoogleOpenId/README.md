@@ -33,13 +33,13 @@ Depois da API configurada, temos que configurar as variáveis do Environment.
 | **google_uri_step_2** | ` https://www.googleapis.com/oauth2/v4/token?code=${code}&client_secret=${google_client_secret}&grant_type=authorization_code&redirect_uri=${redirect_uri}&client_id=${google_client_id} `|Google URI Step 02|
 | **sensedia_oauth_uri** | `<url do gateway>/oauth/access-token`  | Endereço do API Authorization|
 
-> **Obs.:** `<url do gateway>`, pode por exemplo ser `http://localhost:8080` caso este seja o valor do seu **Host / Inbound Address**
+> :information_source: **Obs.:** `<url do gateway>`, pode por exemplo ser `http://localhost:8080` caso este seja o valor do seu **Host / Inbound Address**
 
 ### Criar credenciais do Google
 
 Acessar [Credentials – Google API Console](https://console.developers.google.com/apis/credentials) e criar uma credencial do tipo **OAuth Client ID** (`create credentials > OAuth client ID`), isso lhe dará um `client_id` e um `client_secret` que será usado no Enviroment.
 
-> **Obs.:** Em `"Authorized redirect URIs"` adicionar a URL de _callback_ informada na variável `google_uri_callback`.
+> :information_source: **Obs.:** Em `"Authorized redirect URIs"` adicionar a URL de _callback_ informada na variável `google_uri_callback`.
 
 Atualize as variáveis `google_client_id` e `google_client_secret` do Environment com os respectivos valores obtidos.  
 
@@ -47,10 +47,10 @@ Atualize as variáveis `google_client_id` e `google_client_secret` do Environmen
 
 Associar o **App** que vai requisitar o token a um **Plan** e a API `Google Open ID API v1`.
 
-**Atenção**! No mesmo **App** é necessário incluir a API que será protegida e usará o `access_token` gerado, a API deve ter o interceptor de `OAuth` e o `Grant Type` como `Client Credentials`.
+| :warning: **ATENÇÃO!** No mesmo **App** é necessário incluir a API que será protegida e usará o `access_token` gerado, a API deve ter o interceptor de `OAuth` e o `Grant Type` como `Client Credentials`. |
+| --- |
 
-### REST API
----
+### Utilizando a API
 
 Para utilizar a API do Google OpenID realizamos o seguinte _request_.
 
@@ -60,7 +60,7 @@ curl -XPOST http://<url do gateway>/google/oauth/openid/redirect \
     -H 'Content-type: application/json' \
     -d '{"extraInfo": {"key01": "value01", "key02": "value02"}}'
 ```
-> **Obs.:** O extraInfo informado no corpo na requisição é extraído enviado como _state_ para o Google.
+> :information_source: **Obs.:** O extraInfo informado no corpo na requisição é extraído enviado como _state_ para o Google.
 
 _Response_ esperado:
 
