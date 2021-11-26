@@ -1,0 +1,161 @@
+[
+  {
+    "systemProperties": {
+      "release": "3.export-meta-1.0",
+      "buildDate": "2017-04-05T16:35:19Z",
+      "projectName": "api-manager",
+      "revision": "b7856f3d096912c224bb0a2f3829856df4e050cd"
+    },
+    "id": null,
+    "name": "Google Open ID API",
+    "description": null,
+    "version": "v1",
+    "releaseNotes": null,
+    "plans": [],
+    "creationDate": 1500300521000,
+    "parent": null,
+    "basePath": "/google/oauth/openid",
+    "icon": null,
+    "revisions": [
+      {
+        "interceptors": [],
+        "apiBroken": false,
+        "api": {
+          "name": "Google Open ID API",
+          "version": "v1",
+          "plans": [],
+          "appsCount": 0
+        },
+        "revisionNumber": 1,
+        "lifeCycle": "AVAILABLE",
+        "creationDate": 1500300521000,
+        "deployments": [],
+        "resources": [
+          {
+            "id": null,
+            "destination": null,
+            "interceptors": [],
+            "apiBroken": false,
+            "timeout": null,
+            "name": "Redirect",
+            "description": null,
+            "operations": [
+              {
+                "id": null,
+                "destination": null,
+                "interceptors": [
+                  {
+                    "id": null,
+                    "idTemp": null,
+                    "position": 1,
+                    "type": "Client ID validation",
+                    "content": "{\"location\":\"HEADER\",\"name\":\"client_id\"}",
+                    "executionPoint": "FIRST",
+                    "status": "REFERENCE",
+                    "parent": null,
+                    "revision": null,
+                    "resource": null,
+                    "operation": {
+                      "id": null,
+                      "apiBroken": false,
+                      "planBroken": false,
+                      "revisionNumber": 1,
+                      "resourceName": "Redirect",
+                      "method": "POST",
+                      "path": "/redirect"
+                    },
+                    "planId": null
+                  },
+                  {
+                    "id": null,
+                    "idTemp": null,
+                    "position": 2,
+                    "type": "Custom",
+                    "content": "{\"name\":\"google_redirect\",\"script\":\"var generateBody = function (body, statusCode) {\\n    $call.stopFlow = true;\\n    $call.decision.setAccept(false);\\n    $call.response = new com.sensedia.interceptor.externaljar.dto.ApiResponse();\\n    $call.response.setStatus(statusCode);\\n    $call.response.getBody().setString($json.stringify(body), \\\"utf-8\\\");    \\n    $call.response.setHeader(\\\"Content-Type\\\", \\\"application/json\\\");   \\n    $call.stopFlow = true;\\n};\\n\\nvar error = function(msg){\\n    var msg_error = {}; \\n    msg_error.error = msg;\\n    return msg_error;\\n};\\n\\nvar isEmpty = function(value){    \\n    return (value == undefined || value == null || value == '' || value.length < 1);\\n};\\n\\nvar generateState = function(app, extraInfo){\\n    var state = {}\\n    state.client_id =  app.code;\\n    state.secret = app.secret;\\n    state.extraInfo = extraInfo;    \\n    return $base64.encodeString($json.stringify(state));\\n};\\n\\ntry{    \\n    var bodyRequest = $call.request.getBody().getString('UTF-8');\\n    var extraInfo = {};\\n    if(!isEmpty(bodyRequest.trim())){                \\n        var request = JSON.parse(bodyRequest);\\n        extraInfo = request.extraInfo;\\n    }    \\n    var google_client_id = $call.environmentVariables.get(\\\"google_client_id\\\");\\n    var google_uri = $call.environmentVariables.get(\\\"google_uri_step_1\\\");\\n    var google_uri_callback = $call.environmentVariables.get(\\\"google_uri_callback\\\");\\n    var state = generateState($call.app, extraInfo);\\n    google_uri = google_uri.replace(\\\"${google_client_id}\\\", google_client_id);\\n    google_uri = google_uri.replace(\\\"${redirect_uri}\\\", google_uri_callback);\\n    google_uri = google_uri.replace(\\\"${state}\\\",state);\\n    var body = {};\\n    body.redirect_uri = google_uri;\\n    generateBody(body, 202);   \\n}catch(e){\\n    $call.tracer.trace(e);\\n    generateBody(error(e.toString()), 400);\\n}\\n\",\"view\":true,\"id\":4}",
+                    "executionPoint": "FIRST",
+                    "status": "REFERENCE",
+                    "parent": null,
+                    "revision": null,
+                    "resource": null,
+                    "operation": {
+                      "id": null,
+                      "apiBroken": false,
+                      "planBroken": false,
+                      "revisionNumber": 1,
+                      "resourceName": "Redirect",
+                      "method": "POST",
+                      "path": "/redirect"
+                    },
+                    "planId": null
+                  }
+                ],
+                "apiBroken": false,
+                "timeout": null,
+                "description": null,
+                "method": "POST",
+                "path": "/redirect",
+                "async": false,
+                "urls": []
+              }
+            ],
+            "config": {}
+          },
+          {
+            "id": null,
+            "destination": null,
+            "interceptors": [],
+            "apiBroken": false,
+            "timeout": null,
+            "name": "Callback",
+            "description": null,
+            "operations": [
+              {
+                "id": null,
+                "destination": null,
+                "interceptors": [
+                  {
+                    "id": null,
+                    "idTemp": null,
+                    "position": 1,
+                    "type": "Custom",
+                    "content": "{\"name\":\"google_callback\",\"script\":\"var error = function (msg) {\\r\\n    var msg_error = {};\\r\\n    msg_error.error = msg;\\r\\n    return msg_error;\\r\\n};\\r\\n\\r\\nvar generateBody = function (body, statusCode) {\\r\\n    $call.stopFlow = true;\\r\\n    $call.decision.setAccept(false);\\r\\n    $call.response = new com.sensedia.interceptor.externaljar.dto.ApiResponse();\\r\\n    $call.response.setStatus(statusCode);\\r\\n    $call.response.getBody().setString(body, \\\"utf-8\\\");\\r\\n    $call.response.setHeader(\\\"Content-Type\\\", \\\"application\\\/json\\\");\\r\\n    $call.stopFlow = true;\\r\\n};\\r\\n\\r\\nvar generateGoogleToken = function (code) {\\r\\n    var google_uri = $call.environmentVariables.get(\\\"google_uri_step_2\\\");\\r\\n    var google_client_id = $call.environmentVariables.get(\\\"google_client_id\\\");\\r\\n    var google_client_secret = $call.environmentVariables.get(\\\"google_client_secret\\\");\\r\\n    var google_uri_callback = $call.environmentVariables.get(\\\"google_uri_callback\\\");\\r\\n\\r\\n    google_uri = google_uri.replace(\\\"${google_client_id}\\\", google_client_id);\\r\\n    google_uri = google_uri.replace(\\\"${google_client_secret}\\\", google_client_secret);\\r\\n    google_uri = google_uri.replace(\\\"${code}\\\", code);\\r\\n    google_uri = google_uri.replace(\\\"${redirect_uri}\\\", google_uri_callback);\\r\\n\\r\\n    return $http.post(google_uri, null);\\r\\n};\\r\\n\\r\\nvar generateSensediaToken = function (googleResponse, state) {\\r\\n    var sensedia_oauth_uri = $call.environmentVariables.get(\\\"sensedia_oauth_uri\\\");\\r\\n    var authorization = state.client_id + \\\":\\\" + state.secret;\\r\\n    authorization = $base64.encodeString(authorization);\\r\\n    authorization = \\\"Basic \\\" + authorization;\\r\\n\\r\\n    var headers = {};\\r\\n    headers[\\\"Authorization\\\"] = new java.lang.String(authorization);\\r\\n    headers[\\\"Content-Type\\\"] = \\\"application\\\/json\\\";\\r\\n\\r\\n    var tokenRequest = {};\\r\\n    tokenRequest.grant_type = \\\"client_credentials\\\";\\r\\n    tokenRequest.extraInfo = state.extraInfo;\\r\\n    tokenRequest.extraInfo.owner = googleResponse[\\\"email\\\"];\\r\\n    tokenRequest.extraInfo.name = googleResponse[\\\"name\\\"];\\r\\n    tokenRequest.extraInfo.email = googleResponse[\\\"email\\\"];\\r\\n\\r\\n    return $http.post(sensedia_oauth_uri, headers, $json.stringify(tokenRequest));\\r\\n};\\r\\n\\r\\nvar delimiter = \\\".\\\";\\r\\n\\r\\ntry {\\r\\n    var code = $call.request.getQueryParam(\\\"code\\\");\\r\\n    var state = $call.request.getQueryParam(\\\"state\\\");\\r\\n    state = $base64.decodeString(state);\\r\\n    state = JSON.parse(state);\\r\\n    var googleResponse = generateGoogleToken(code);\\r\\n    if (googleResponse.status == 200) {\\r\\n        var googleJWT = JSON.parse(googleResponse.getResponseText());\\r\\n        var userInfo = googleJWT[\\\"id_token\\\"].split(delimiter);\\r\\n        var json = userInfo[1];\\r\\n        $call.tracer.trace(json);\\r\\n        json = $base64.decodeString(json);\\r\\n        responseOauth = generateSensediaToken(JSON.parse(json), state);\\r\\n        generateBody(responseOauth.getResponseText(), responseOauth.status);\\r\\n    } else {\\r\\n        generateBody(JSON.parse(response.getResponseText()), response.status);\\r\\n    }\\r\\n\\r\\n} catch (e) {\\r\\n    $call.tracer.trace(e);\\r\\n    generateBody(error(e.toString()), 400);\\r\\n}\",\"view\":true,\"id\":5}",
+                    "executionPoint": "FIRST",
+                    "status": "REFERENCE",
+                    "parent": null,
+                    "revision": null,
+                    "resource": null,
+                    "operation": {
+                      "id": null,
+                      "apiBroken": false,
+                      "planBroken": false,
+                      "revisionNumber": 1,
+                      "resourceName": "Callback",
+                      "method": "GET",
+                      "path": "/callback"
+                    },
+                    "planId": null
+                  }
+                ],
+                "apiBroken": false,
+                "timeout": null,
+                "description": null,
+                "method": "GET",
+                "path": "/callback",
+                "async": false,
+                "urls": []
+              }
+            ],
+            "config": {}
+          }
+        ]
+      }
+    ],
+    "privateAPI": true,
+    "users": [],
+    "visibilityType": "ORGANIZATION",
+    "teamVisibility": null,
+    "appsCount": null,
+    "accessTokensCount": null,
+    "swagger": null
+  }
+]
