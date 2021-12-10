@@ -2,7 +2,7 @@
 # Google OpenID
 
 ### Criar API do Google OpenID
-1. Realizar o download do arquivo de importação de api `GoogleOpenIApi.json`
+1. Realizar o download do arquivo de importação de API `GoogleOpenIApi.json`
 2. Após realizar o donwload ir no menu `Settings > Export/Import`
 3. Clicar no botão `IMPORT`
 4. Selecionar a opção `API`
@@ -60,7 +60,7 @@ curl -XPOST http://<url do gateway>/google/oauth/openid/redirect \
     -H 'Content-type: application/json' \
     -d '{"extraInfo": {"key01": "value01", "key02": "value02"}}'
 ```
-> :information_source: **Obs.:** O extraInfo informado no corpo na requisição é extraído enviado como _state_ para o Google.
+> :information_source: **Obs.:** O extraInfo informado no corpo na requisição é extraído e enviado como _state_ para o Google.
 
 _Response_ esperado:
 
