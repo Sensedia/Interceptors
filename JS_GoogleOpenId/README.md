@@ -1,6 +1,8 @@
 ![N|Solid](https://www.google.com.br/images/branding/googleg/1x/googleg_standard_color_128dp.png)
 # Google OpenID
 
+[README-EN.md](README-EN.md)
+
 ### Criar API do Google OpenID
 1. Realizar o download do arquivo de importação de API `GoogleOpenIApi.json`
 2. Após realizar o donwload ir no menu `Settings > Export/Import`

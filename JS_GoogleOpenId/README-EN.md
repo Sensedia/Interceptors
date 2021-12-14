@@ -1,7 +1,7 @@
 ![N|Solid](https://www.google.com.br/images/branding/googleg/1x/googleg_standard_color_128dp.png)
-[link](README.md)
-
 # Google OpenID
+
+[README-PT.md](README.md)
 
 ### Create API Google OpenID
 1. Download the API import file `GoogleOpenIApi.json`.
@@ -20,7 +20,7 @@ After this procedure, go to the API and configure Environments.
 Once the API is set up, it is necessary to configure the Environment variables.
 
 1. Access the `Environments` page.
-2. Editar the chosen Environment.
+2. Edit the chosen Environment.
 3. Click on `ADD MAP` and add the `Google Variables` map.
 4. Add the variables below.
 
@@ -43,7 +43,7 @@ Access [Credentials – Google API Console](https://console.developers.google.co
 
 > :information_source: **Obs.:** In `"Authorized redirect URIs"`, add callback URL shown in the `google_uri_callback` variable.
 
-Atualize as variáveis `google_client_id` e `google_client_secret` do Environment com os respectivos valores obtidos.  
+Udpate the variables `google_client_id` and `google_client_secret` from the Environment with respective obtained values.
 
 ### Associate app to the API
 
