@@ -72,4 +72,4 @@ Expected response:
 }
 ```
 
-When you access the `redirect_uri` from the response shown above, you will be redirected to the authentication porcess where the access token is generated.
+When you access the `redirect_uri` from the response shown above, you will be redirected to the authentication process where the access token is generated.
