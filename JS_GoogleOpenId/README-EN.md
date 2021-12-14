@@ -10,8 +10,8 @@
 4. Select the `API` otpion.
 5. Click on `SELECT FILE` and choose the file `GoogleOpenIdApi.json`.
 6. Click on the `NEXT` button.
-7. Select the `Google Open ID API v1` option
-8. Click on `IMPORT`
+7. Select the `Google Open ID API v1` option.
+8. Click on `IMPORT`.
 
 After this procedure, go to the API and configure Environments.
 
@@ -35,7 +35,7 @@ Once the API is set up, it is necessary to configure the Environment variables.
 | **google_uri_step_2** | ` https://www.googleapis.com/oauth2/v4/token?code=${code}&client_secret=${google_client_secret}&grant_type=authorization_code&redirect_uri=${redirect_uri}&client_id=${google_client_id} `|Google URI Step 02|
 | **sensedia_oauth_uri** | `<url do gateway>/oauth/access-token`  | API Authorization address|
 
-> :information_source: **Obs.:** `<url do gateway>`, it could be `http://localhost:8080` in case this the value of your **Host / Inbound Address**
+> :information_source: **Obs.:** `<url do gateway>`, it could be `http://localhost:8080` in case this ia the value of your **Host / Inbound Address**
 
 ### Create Google credentials
 
@@ -49,7 +49,7 @@ Udpate the variables `google_client_id` and `google_client_secret` from the Envi
 
 Associate the **App** that will request a token from a **Plan** and the API `Google Open ID API v1`.
 
-| :warning: **ATTENTION!** In the same **App** is necessary to include the API that will be protected and it will use the generated `access_token`, the API must have the `OAuth` interceptor and the `Grant Type` as `Client Credentials`. |
+| :warning: **ATTENTION!** In the same **App**, it is necessary to include the API that will be protected and that will use the generated `access_token`. The API must have the `OAuth` interceptor and the `Grant Type` as `Client Credentials`. |
 | --- |
 
 ### Using the API
@@ -62,7 +62,7 @@ curl -XPOST http://<url do gateway>/google/oauth/openid/redirect \
     -H 'Content-type: application/json' \
     -d '{"extraInfo": {"key01": "value01", "key02": "value02"}}'
 ```
-> :information_source: **Obs.:** The shown extraInfo in the requisition's body is extracted and sent as a state to Google.
+> :information_source: **Obs.:** The extraInfo informed in the requisition's body is extracted and sent as a state to Google.
 
 Expected response:
 
@@ -72,4 +72,4 @@ Expected response:
 }
 ```
 
-When acessing the `redirect_uri` from the previously response, it redirects to the authentication porcess where the access token is generated.
+When you access the `redirect_uri` from the response shown above, you will be redirected to the authentication porcess where the access token is generated.
