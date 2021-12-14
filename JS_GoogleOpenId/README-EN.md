@@ -35,7 +35,7 @@ Once the API is set up, it is necessary to configure the Environment variables.
 | **google_uri_step_2** | ` https://www.googleapis.com/oauth2/v4/token?code=${code}&client_secret=${google_client_secret}&grant_type=authorization_code&redirect_uri=${redirect_uri}&client_id=${google_client_id} `|Google URI Step 02|
 | **sensedia_oauth_uri** | `<url do gateway>/oauth/access-token`  | API Authorization address|
 
-> :information_source: **Obs.:** `<url do gateway>`, it could be `http://localhost:8080` in case this ia the value of your **Host / Inbound Address**
+> :information_source: **Obs.:** `<url do gateway>`, it could be `http://localhost:8080` in case this is the value of your **Host / Inbound Address**
 
 ### Create Google credentials
 
