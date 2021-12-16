@@ -7,7 +7,7 @@
 1. Download the API import file `GoogleOpenIApi.json`.
 2. After downloading, go to the `Settings > Export/Import` menu.
 3. Click on `IMPORT`.
-4. Select the `API` otpion.
+4. Select the `API` option.
 5. Click on `SELECT FILE` and choose the file `GoogleOpenIdApi.json`.
 6. Click on the `NEXT` button.
 7. Select the `Google Open ID API v1` option.
@@ -39,13 +39,13 @@ Once the API is set up, it is necessary to configure the Environment variables.
 
 ### Create Google credentials
 
-Access [Credentials – Google API Console](https://console.developers.google.com/apis/credentials) and create a **OAuth Client ID** credential (`create credentials > OAuth client ID`), this will provide you a `client_id` and a `client_secret` that will be used in Enviroment.
+Access [Credentials – Google API Console](https://console.developers.google.com/apis/credentials) and create a **OAuth Client ID** credential (`create credentials > OAuth client ID`), this will provide you a `client_id` and a `client_secret` that will be used in Environment.
 
 > :information_source: **Obs.:** In `"Authorized redirect URIs"`, add callback URL shown in the `google_uri_callback` variable.
 
-Udpate the variables `google_client_id` and `google_client_secret` from the Environment with respective obtained values.
+Update the variables `google_client_id` and `google_client_secret` from the Environment with respective obtained values.
 
-### Associate app to the API
+### Associate App to the API
 
 Associate the **App** that will request a token from a **Plan** and the API `Google Open ID API v1`.
 
