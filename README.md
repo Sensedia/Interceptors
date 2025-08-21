@@ -14,7 +14,8 @@ O nosso repositório possui a seguinte estrutura:
   - JS_FindOperationNameSOAP_JDOM: Encontrar o operationName de uma operação SOAP. 
   - JS_RequestCommons: Agrega as funções mais utilizadas por outros interceptors no fluxo de request.
   - JS_StringUtils: Provêm funções para a manipulação e vadiação de strings.
-  - JS_JWTValidator: Provê funções para manipulação e validação de Token JWT
+  - JS_JWTValidator: Provê funções para manipulação e validação de Token JWT.
+  - JS_AIMediation: Fornece funções para mediação de APIs de fornecedores de LLM.
 
  
 
