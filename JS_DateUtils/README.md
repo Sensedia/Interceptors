@@ -1,20 +1,20 @@
 # String Utils Interceptor. 
-Este interceptor tem a finalidade prover funções para a manipulação e vadiação de {Date}. 
+Este interceptor tem a finalidade de prover funções para a manipulação e validação de {Date}. 
  
-Ele faz isso através de uma classe que é que contém as funções de manipulação e tratamento de dados. Esta classe é carregada nas variáveis de contexto com o nome de 'date-utils'. 
+Ele faz isso através de uma classe que contém as funções de manipulação e tratamento de dados. Esta classe é carregada nas variáveis de contexto com o nome de 'date-utils'. 
  
 Nele encontramos algumas funções como: </br> 
 <ul> 
 <li>Formatar uma Date</li> 
 <li>Criar um novo objeto de Date</li> 
-<li>Adicionar/Subtrair dias, meses, ano, horas, minutos e segundos de um Date</li> 
+<li>Adicionar/Subtrair dias, meses, anos, horas, minutos e segundos de um Date</li> 
 </ul> 
 
 ## Antes de utilizar 
 É aconselhável declarar esse interceptor na guia de Interceptors do API Manager. Essa funcionalidade é encontrada logo abaixo do item APIs no menu lateral. 
  
 ## Utilização: 
-Para utilizar esse interceptor, basta incluí-lo no <b>inicio</b> do fluxo de requisições do seu recurso. 
+Para utilizar esse interceptor, basta incluí-lo no <b>início</b> do fluxo de requisições do seu recurso. 
  
 Uma vez incluso, seu código estará carregado nas variáveis de contexto da requisição. 
  
@@ -31,8 +31,8 @@ As definições das funções bem como sua documentação estão escritas em jsD
 #### format(pattern, date) 
 Formata uma data a partir de um template.
 
-O formato de data segue o mesmo principio de regras e convenção de nomes da class DateTimeFormatter do Java. </br>
-Contudo, somente alguns dos parametros de formato são aceitos. 
+O formato de data segue o mesmo princípio de regras e convenção de nomes da classe DateTimeFormatter do Java. </br>
+Contudo, somente alguns dos parâmetros de formato são aceitos. 
 Segue a lista dos parâmetros disponíveis: </br>
 <ul>
     <li>dd - para dias do mês</li>
@@ -63,7 +63,7 @@ Cria um objeto Date com as definições de Datetime passadas como argumento.
 
 Os valores de tempo (hora, minuto e segundo) não são mandatórias e são definidas como 0 caso não sejam passadas como argumento.
 
-Diferente do construtor do objeto Date, essa function utilia parâmetros na base 1 e ano inicial 0 ao invés de 1900.
+Diferente do construtor do objeto Date, essa function utiliza parâmetros na base 1 e ano inicial 0 ao invés de 1900.
 
 ```javascript 
 dateUtils.create(2018, 3, 3); 
@@ -76,7 +76,7 @@ dateUtils.create(2018, 3, 3, 15, 23, 45);
 #### addDays(date, days) 
 Adiciona uma quantidade de dias a uma dada data.
 
-Utilzar número de dias negativos subtrai dias da data.
+Utilizar número de dias negativos subtrai dias da data.
 ```javascript 
 dateUtils.addDays(new Date, 1); 
 // retorno: {Date} 03/08/2018 10:20:30
@@ -88,7 +88,7 @@ dateUtils.addDays(new Date, -1);
 #### addMonths(date, months) 
 Adiciona uma quantidade de meses a uma dada data.
 
-Utilzar número de dias negativos subtrai meses da data.
+Utilizar número de dias negativos subtrai meses da data.
 ```javascript 
 dateUtils.addMonths(new Date, 1); 
 // retorno: {Date} 02/09/2018 10:20:30
@@ -100,7 +100,7 @@ dateUtils.addMonths(new Date, -1);
 #### addYears(date, years) 
 Adiciona uma quantidade de anos a uma dada data.
 
-Utilzar número de dias negativos subtrai anos da data.
+Utilizar número de dias negativos subtrai anos da data.
 ```javascript 
 dateUtils.addYears(new Date, 1); 
 // retorno: {Date} 02/08/2019 10:20:30
@@ -112,7 +112,7 @@ dateUtils.addYears(new Date, -1);
 #### addHours(date, days) 
 Adiciona uma quantidade de horas a uma dada data.
 
-Utilzar número de dias negativos subtrai horas da data.
+Utilizar número de dias negativos subtrai horas da data.
 ```javascript 
 dateUtils.addHours(new Date, 2); 
 // retorno: {Date} 02/08/2018 12:20:30
@@ -124,7 +124,7 @@ dateUtils.addHours(new Date, -2);
 #### addMinutes(date, days) 
 Adiciona uma quantidade de minutos a uma dada data.
 
-Utilzar número de dias negativos subtrai minutos da data.
+Utilizar número de dias negativos subtrai minutos da data.
 ```javascript 
 dateUtils.addMinutes(new Date, 5); 
 // retorno: {Date} 02/08/2018 10:25:30
@@ -136,7 +136,7 @@ dateUtils.addMinutes(new Date, -5);
 #### addSeconds(date, days) 
 Adiciona uma quantidade de segundos a uma dada data.
 
-Utilzar número de dias negativos subtrai segundos da data.
+Utilizar número de dias negativos subtrai segundos da data.
 ```javascript 
 dateUtils.addSeconds(new Date, 10); 
 // retorno: {Date} 02/08/2019 10:20:40
